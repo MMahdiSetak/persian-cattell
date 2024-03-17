@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 raw_score_table = {
     "A": [[3, 52, 101, 126, 176], [], [26, 27, 51, 76, 151]],
     "B": [[152, 177, 178], [28, 53, 54, 78, 103, 128], [77, 102, 127, 153]],
@@ -35,3 +37,56 @@ score_mapping_table = {
     "Q3": [(0, 5), (6, 8), (9, 10), (11, 12), (13, 14), (15, 15), (16, 16), (17, 18), (19, 19), (20, 20)],
     "Q4": [(0, 2), (3, 4), (5, 7), (8, 9), (10, 11), (12, 14), (15, 16), (17, 18), (19, 21), (22, 26)],
 }
+
+
+def second_order_score(fs, sex):
+    score = {
+        "Extroversion": (3 * fs["A"] + 4 * fs["F"] + 4 * fs["H"] - 4 * fs["Q2"] + 17) / 10,
+        "Anxiety": (-3 * fs["C"] - fs["H"] + fs["L"] + 3 * fs["O"] - fs["Q3"] + 3 * fs["Q4"] + 44) / 10,
+        "Flexibility":
+            (-1 * fs["A"] + 4 * fs["E"] + 2 * fs["F"] - 6 * fs["I"] + 2 * fs["L"] - 4 * fs[
+                "M"] + 72) / 10 if sex == 2 else
+            (-2 * fs["A"] + 2 * fs["F"] - 6 * fs["I"] - 4 * fs["M"] - 2 * fs["Q1"] + 121) / 10,
+        "Independence":
+            (5 * fs["E"] - fs["G"] + 3 * fs["H"] + 2 * fs["M"] + 4 * fs["Q1"]
+             + fs["Q2"] - 22) / 10 if sex == 2 else
+            (5 * fs["E"] - fs["G"] + 3 * fs["H"] + 2 * fs["L"] - fs["N"] - 2 * fs["O"] + 2 * fs["Q1"]
+             + fs["Q2"] + 6) / 10,
+        "Self Control": (7 * fs["G"] + 5 * fs["Q3"] - 11) / 10,
+        "Compatibility": (fs["B"] + 3 * fs["C"] + 2 * fs["E"] + 4 * fs["F"] + fs["G"] - fs["H"] - 2 * fs["I"]
+                          - 3 * fs["O"] - fs["Q1"] - 4 * fs["Q4"] + 44) / 10,
+        "Leadership": (fs["B"] + fs["C"] + fs["E"] + 2 * fs["F"] + 2 * fs["G"] + 2 * fs["H"] - fs["I"]
+                       - fs["M"] + fs["N"] - 2 * fs["O"] + 2 * fs["Q3"] - fs["Q4"] + 17) / 10,
+        "Creativity": (-3 * fs["A"] + 3 * fs["B"] + 2 * fs["E"] - 3 * fs["F"] + 2 * fs["H"] + 3 * fs["I"]
+                       + 2 * fs["M"] - 2 * fs["N"] + 2 * fs["Q1"] + 3 * fs["Q2"] + 6) / 10,
+    }
+    return score
+
+
+def plot_score(score, title):
+    # Mid-point
+    mid_point = 5.5
+
+    # Function to determine the color based on the number
+    def determine_color(number):
+        if 4 <= number <= 7:
+            return 'green'
+        else:
+            return 'red'
+
+    # Create figure
+    plt.figure(figsize=(10, 6))
+
+    # Plot each bar
+    for i, (key, value) in enumerate(reversed(list(score.items()))):
+        color = determine_color(value)
+        # The bar starts from mid-point and extends to the value
+        plt.barh(key, value - mid_point, left=mid_point, color=color)
+
+    plt.axvline(mid_point, color='black', linewidth=0.8, linestyle='--')  # Mid-point line
+    plt.xlabel('Score')
+    plt.xlim(1, 10)
+    plt.title(title)
+    plt.grid(axis='x')
+    plt.savefig(f'./report/{title}.png')
+    plt.show()
