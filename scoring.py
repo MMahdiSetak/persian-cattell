@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 raw_score_table = {
     "A": [[11, 64, 125, 149, 171], [], [9, 40, 56, 59, 174]],
-    "B": [[122, 133, 173, 175], [25, 73, 106, 177, 182], [48, 104, 127, 147]],
+    "B": [[122, 133, 177, 175], [25, 73, 106, 173, 182], [48, 104, 127, 147]],
     "C": [[13, 28, 51, 80, 90, 148], [], [39, 88, 105, 118, 121, 129, 176]],
     "E": [[29, 72, 78, 98, 99, 131, 134], [], [3, 22, 102, 128, 153, 183]],
     "F": [[7, 35, 52, 60, 67, 76, 85], [], [5, 20, 36, 37, 68, 86]],
@@ -21,7 +21,7 @@ raw_score_table = {
 
 score_mapping_table = {
     "A": [(0, 1), (2, 3), (4, 4), (5, 6), (7, 7), (8, 8), (9, 10), (11, 11), (12, 13), (14, 20)],
-    "B": [(0, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12), (-1, -1), (13, 13), (-1, -1)],
+    "B": [(0, 3), (4, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (-1, -1), (11, 11), (12, 13)],
     "C": [(0, 6), (7, 8), (9, 10), (11, 12), (13, 14), (15, 16), (17, 17), (18, 19), (20, 20), (21, 26)],
     "E": [(0, 4), (5, 6), (7, 7), (8, 9), (10, 10), (11, 12), (13, 14), (15, 16), (17, 18), (19, 26)],
     "F": [(0, 5), (6, 6), (7, 8), (9, 10), (11, 12), (13, 13), (14, 15), (16, 17), (18, 20), (21, 26)],
@@ -63,7 +63,7 @@ def second_order_score(fs, sex):
     return score
 
 
-def plot_score(score, title):
+def plot_score(score, title, raw_score=None):
     # Mid-point
     mid_point = 5.5
 
@@ -82,6 +82,8 @@ def plot_score(score, title):
         color = determine_color(value)
         # The bar starts from mid-point and extends to the value
         plt.barh(key, value - mid_point, left=mid_point, color=color)
+        if raw_score is not None:
+            plt.text(10.1, i, f"{raw_score[key]}", va='center')
 
     plt.axvline(mid_point, color='black', linewidth=0.8, linestyle='--')  # Mid-point line
     plt.xlabel('Score')

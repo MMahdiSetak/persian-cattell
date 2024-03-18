@@ -137,9 +137,9 @@ class CattellTestApplication:
             score = 0
             if key != 'B':
                 for q_index in questions[0]:
-                    score += self.answers[q_index - 1] - 1
-                for q_index in questions[2]:
                     score += 3 - self.answers[q_index - 1]
+                for q_index in questions[2]:
+                    score += self.answers[q_index - 1] - 1
             else:
                 for i in range(3):
                     for q_index in questions[i]:
@@ -152,7 +152,7 @@ class CattellTestApplication:
                 if mapping[i][0] <= raw_score[key] <= mapping[i][1]:
                     final_score[key] = i + 1
 
-        plot_score(final_score, f"{self.name}'s First Order Factors")
+        plot_score(final_score, f"{self.name}'s First Order Factors", raw_score)
         second_order_scores = second_order_score(final_score, self.sex)
         plot_score(second_order_scores, f"{self.name}'s Second Order Factors")
 
@@ -181,4 +181,3 @@ if __name__ == '__main__':
 
     app = CattellTestApplication(name=user_name, sex=user_sex)
     app.run()
-    print(app.answers)
